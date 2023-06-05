@@ -1,5 +1,5 @@
 import './ToDoList.css'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { ToDoItemBox } from './ToDoItemBox';
 import { ToDoForm } from './ToDoForm'
 import { ToDoFilter } from './ToDoFilter';
@@ -44,16 +44,18 @@ export function ToDoList() {
       // Display mode: return items arr with corresponding status
     function scopeFilter() {
         switch(scope) {
-        case Scope.All:
-            return itemArr;
-        case Scope.Complete:
-            return itemArr.filter(item => item.isCompleted === true);
-        case Scope.Incomplete:
-            return itemArr.filter(item => item.isCompleted === false);
-        default:
-            return itemArr;
+          case Scope.All:
+              return itemArr;
+          case Scope.Complete:
+              return itemArr.filter(item => item.isCompleted === true);
+          case Scope.Incomplete:
+              return itemArr.filter(item => item.isCompleted === false);
+          default:
+              return itemArr;
         }
     }
+
+    const scopeFilterMemo = useCallback(scopeFilter, [itemArr, scope])
 
     return (
         <>
@@ -68,9 +70,9 @@ export function ToDoList() {
           <ToDoFilter 
             sc={scope}
             updateScope={updateScope}/>
-    
-          <div>
-              {scopeFilter().map(todos =>  
+
+          <>
+              {scopeFilterMemo().map(todos =>  
                   <ul key ={todos.id}>
                     <ToDoItemBox 
                       validateText={validateText}
@@ -79,7 +81,7 @@ export function ToDoList() {
                     />
                   </ul>)
               }
-            </div>
+          </>
         </>
       )
 }
