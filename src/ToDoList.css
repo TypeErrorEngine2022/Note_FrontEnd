@@ -35,22 +35,20 @@ h1 {
 }
 
 .itemInput {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  flex-grow: 1;
   width: 25em;
   height: 2em;
+  margin-right: 1em;
 }
 
 .itemBox {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  width: 35em;
+  width: 40em;
   padding: 1.3em;
   border-style: solid;
-  border-radius: 15px;
-  font-size: 20px;
+  border-radius: 1em;
 }
 
 .itemBox:hover {
@@ -58,8 +56,9 @@ h1 {
 }
 
 .checkBox {
-  width: 20px;
-  height: 20px;
+  width: 2em;
+  height: 2em;
+  margin-right: 1em;
   cursor: pointer;
 }
 
@@ -67,13 +66,8 @@ h1 {
   background-color: #61dafbaa;
 }
 
-.functionBox {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.itemAndFunction {
-  box-sizing: border-box;
-  width: 40em;
+.text {
+  text-align: start;
+  margin-right: 1em;
+  width: 30em;
 }

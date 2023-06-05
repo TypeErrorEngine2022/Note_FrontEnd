@@ -100,7 +100,7 @@ export function ToDoItemBox (
                     onChange={(e: ChangeEvent<HTMLInputElement>) => 
                     handleToggle(todo.id, e.target.checked)}
                 />
-                {todo.content}
+                <span className='text'>{todo.content}</span>
                 <button
                     className='btn'
                     onClick={() => 
