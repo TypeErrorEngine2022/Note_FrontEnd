@@ -47,9 +47,9 @@ export function ToDoList() {
         case Scope.All:
             return itemArr;
         case Scope.Complete:
-            return itemArr.filter(item => item.isCompleted == true);
+            return itemArr.filter(item => item.isCompleted === true);
         case Scope.Incomplete:
-            return itemArr.filter(item => item.isCompleted == false);
+            return itemArr.filter(item => item.isCompleted === false);
         default:
             return itemArr;
         }
