@@ -41,7 +41,7 @@ export function ToDoList() {
         setScope(sc);
     }
     
-      // Display mode: return items arr with corresponding status
+    // Display mode: return items arr with corresponding status
     function scopeFilter() {
         switch(scope) {
           case Scope.All:
