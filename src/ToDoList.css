@@ -48,7 +48,7 @@ h1 {
   width: 40em;
   padding: 1.3em;
   border-style: solid;
-  border-radius: 1em;
+  border-radius: 1.5em;
 }
 
 .itemBox:hover {
@@ -60,10 +60,6 @@ h1 {
   height: 2em;
   margin-right: 1em;
   cursor: pointer;
-}
-
-.checkBox::after {
-  background-color: #61dafbaa;
 }
 
 .text {
