@@ -20,28 +20,23 @@ export enum Scope {
 export function ToDoList() {
     const [itemArr, setItemArr] = useState<ToDoItem[]>([]);  
     const [scope, setScope] = useState<Scope>(Scope.All);
-    const [isSearching, setIsSearching] = useState(false);
-    const [searchTarget, setSearchTarget] = useState<string>('');
+    const [searchText, setSearchText] = useState('');
     
     function updateItemArr(helper: (prevArr: ToDoItem[]) => ToDoItem[]) {
         setItemArr(helper(itemArr));
-    }
+    } 
 
     function updateScope(sc: Scope) {
         setScope(sc);
     }
 
-    function updateIsSearching(helper: () => boolean) {
-      setIsSearching(helper());
-  }
-    
-    function updateSarchTarget(helper: () => string) {
-      setSearchTarget(helper());
+    function updateSearchText(helper: () => string) {
+      setSearchText(helper());
     }
 
     function searchFilter() {
-      if (isSearching) {
-        return itemArr.filter(item => item.content === searchTarget);
+      if (searchText != '') {
+        return itemArr.filter(item => (item.content.toLowerCase()).includes(searchText.toLowerCase()));
       }
       else return itemArr;
     }
@@ -63,11 +58,10 @@ export function ToDoList() {
     return (
         <>
           <h1>To Do List</h1> 
-          
-          <ToDoSearch 
-            isSearching={isSearching}
-            updateSarchTarget={updateSarchTarget}
-            updateIsSearching={updateIsSearching}/>
+
+          <ToDoSearch
+            searchText={searchText}
+            updateSearchText={updateSearchText}/>
 
           <br />
 
@@ -79,8 +73,6 @@ export function ToDoList() {
           <ToDoFilter 
             sc={scope}
             updateScope={updateScope}/>
-
-          {isSearching && <p>Search Result:</p>}
 
           <>
               {scopeFilter(searchFilter()).map(todos =>  
