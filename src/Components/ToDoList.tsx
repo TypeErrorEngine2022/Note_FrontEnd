@@ -1,8 +1,9 @@
 import '../ToDoList.css'
-import { useCallback, useState } from 'react'
+import { useState } from 'react'
 import { ToDoItemBox } from './ToDoItemBox';
 import { ToDoForm } from './ToDoForm'
 import { ToDoFilter } from './ToDoFilter';
+import { ToDoSearch } from './ToDoSearch';
 
 export interface ToDoItem{
     id: string,
@@ -19,6 +20,8 @@ export enum Scope {
 export function ToDoList() {
     const [itemArr, setItemArr] = useState<ToDoItem[]>([]);  
     const [scope, setScope] = useState<Scope>(Scope.All);
+    const [isSearching, setIsSearching] = useState(false);
+    const [searchTarget, setSearchTarget] = useState<string>('');
     
     function updateItemArr(helper: (prevArr: ToDoItem[]) => ToDoItem[]) {
         setItemArr(helper(itemArr));
@@ -27,27 +30,47 @@ export function ToDoList() {
     function updateScope(sc: Scope) {
         setScope(sc);
     }
+
+    function updateIsSearching(helper: () => boolean) {
+      setIsSearching(helper());
+  }
     
-      // Display mode: return items arr with corresponding status
-    function scopeFilter() {
-        switch(scope) {
-          case Scope.All:
-              return itemArr;
-          case Scope.Complete:
-              return itemArr.filter(item => item.isCompleted === true);
-          case Scope.Incomplete:
-              return itemArr.filter(item => item.isCompleted === false);
-          default:
-              return itemArr;
-        }
+    function updateSarchTarget(helper: () => string) {
+      setSearchTarget(helper());
     }
 
-    const scopeFilterMemo = useCallback(scopeFilter, [itemArr, scope])
-
+    function searchFilter() {
+      if (isSearching) {
+        return itemArr.filter(item => item.content === searchTarget);
+      }
+      else return itemArr;
+    }
+    
+      // Display mode: return items arr with corresponding status
+    function scopeFilter(filteredItem: ToDoItem[]) {
+        switch(scope) {
+          case Scope.All:
+              return filteredItem;
+          case Scope.Complete:
+              return filteredItem.filter(item => item.isCompleted === true);
+          case Scope.Incomplete:
+              return filteredItem.filter(item => item.isCompleted === false);
+          default:
+              return filteredItem;
+        }
+    }
+  
     return (
         <>
           <h1>To Do List</h1> 
-    
+          
+          <ToDoSearch 
+            isSearching={isSearching}
+            updateSarchTarget={updateSarchTarget}
+            updateIsSearching={updateIsSearching}/>
+
+          <br />
+
           <ToDoForm 
             updateItemArr={updateItemArr}/>
     
@@ -57,8 +80,10 @@ export function ToDoList() {
             sc={scope}
             updateScope={updateScope}/>
 
+          {isSearching && <p>Search Result:</p>}
+
           <>
-              {scopeFilterMemo().map(todos =>  
+              {scopeFilter(searchFilter()).map(todos =>  
                   <ul key ={todos.id}>
                     <ToDoItemBox 
                       todo= {todos} 

@@ -19,9 +19,10 @@ export function ToDoForm (
         e.preventDefault();
         if (text != '') {
             updateItemArr((prevItemArr: ToDoItem[])=> 
-            [...prevItemArr,  
-            {id: crypto.randomUUID(), content: text, isCompleted: false}]);
-        setText('');
+                [...prevItemArr,  
+                {id: crypto.randomUUID(), content: text, isCompleted: false}]
+            );
+            setText('');
         }
     }
 
