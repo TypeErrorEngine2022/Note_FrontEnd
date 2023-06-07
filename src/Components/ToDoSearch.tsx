@@ -1,47 +1,28 @@
-import { FormEvent, useRef } from "react"
+import { ChangeEvent } from "react"
 
 interface ToDoSearchProps {
-    isSearching: boolean;
-    updateSarchTarget: (helper: () => string) => void;
-    updateIsSearching: (helper: () => boolean) => void
+    updateSearchText: (helper: () => string) => void;
+    searchText: string;
 } 
 
-export function ToDoSearch({isSearching, updateSarchTarget, updateIsSearching}: ToDoSearchProps) {
-    const searchRef = useRef<HTMLInputElement>(null);
+export function ToDoSearch({ searchText, updateSearchText}: ToDoSearchProps) {
     
-    function handleSearchSubmit(e: FormEvent<HTMLFormElement>) {
+    function onSearchTextChange(e: ChangeEvent<HTMLInputElement>) {
         e.preventDefault();
-        const target = searchRef.current?.value;
-        if (target) {
-            updateSarchTarget(() => target);
-            updateIsSearching(() => true);
-        }
+        const newText = e.target.value;
+        updateSearchText(() => newText);
     }
 
     return (
         <div>
-            <form onSubmit={e => handleSearchSubmit(e)}>
+            <form role='search'>
+                Search:
                 <input
-                    type='text'
+                    className="searchInput"
+                    type='search'
                     placeholder="Search"
-                    ref={searchRef}/>
-                {!isSearching &&
-                    <button
-                        className="btn"
-                        type='submit'>
-                        Search
-                    </button>
-                }   
-                {isSearching &&
-                    <button
-                        className="btn"
-                        onClick={() => {
-                                updateIsSearching(() => false); 
-                                updateSarchTarget(() => '')
-                            }}>
-                        Finish
-                    </button>
-                }
+                    value={searchText}
+                    onChange={e => onSearchTextChange(e)}/>
             </form>
         </div>
     )

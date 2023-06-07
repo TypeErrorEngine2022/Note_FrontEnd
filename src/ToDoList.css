@@ -62,6 +62,9 @@ ul {
 .itemBox:hover {
   background-color: #f3e0be;
 }
+.searchInput {
+  margin-left: 1em;
+}
 
 .checkBox {
   width: 2em;
