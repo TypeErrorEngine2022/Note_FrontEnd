@@ -9,7 +9,7 @@ export interface ToDoItem{
     id: string,
     content: string,
     isCompleted: boolean
-};
+}
 
 export enum Scope {
     All = 1,

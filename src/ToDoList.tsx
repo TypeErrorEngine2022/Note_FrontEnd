@@ -19,13 +19,13 @@ export enum Scope {
 export function ToDoList() {
     const [itemArr, setItemArr] = useState<ToDoItem[]>([]);  
     const [scope, setScope] = useState<Scope>(Scope.All);
-    const wordLimit: number = 25;
+    const wordLimit = 25;
 
     function validateText(curText: string | null) {
         if (curText === null)
           return false;
         if (curText.length > wordLimit) {
-          const hint: string = `word limit is ${wordLimit}`;
+          const hint= `word limit is ${wordLimit}`;
           alert(hint);
           return false;
         }

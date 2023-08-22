@@ -15,12 +15,12 @@ export function ToDoSearch({ searchText, updateSearchText}: ToDoSearchProps) {
 
     return (
         <div>
-            <form role='search'>
+            <form role='search' className="searchForm">
                 Search:
                 <input
                     className="searchInput"
                     type='search'
-                    placeholder="Search"
+                    placeholder=" Search"
                     value={searchText}
                     onChange={e => onSearchTextChange(e)}/>
             </form>

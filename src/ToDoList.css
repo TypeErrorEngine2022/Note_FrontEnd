@@ -45,8 +45,10 @@ ul {
 .itemInput {
   flex-grow: 1;
   width: 25em;
-  height: 2em;
+  height: 2.2em;
   margin-right: 1em;
+  border-radius: 10px;
+  padding-left: 2px;
 }
 
 .itemBox {
@@ -62,8 +64,12 @@ ul {
 .itemBox:hover {
   background-color: #f3e0be;
 }
+
 .searchInput {
+  border-radius: 10px;
   margin-left: 1em;
+  width: 25em;
+  height: 2.2em;
 }
 
 .checkBox {
