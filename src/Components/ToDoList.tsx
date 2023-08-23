@@ -1,13 +1,21 @@
 import "../ToDoList.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ToDoItemBox } from "./ToDoItemBox";
 import { ToDoForm } from "./ToDoForm";
 import { ToDoFilter } from "./ToDoFilter";
 import { ToDoSearch } from "./ToDoSearch";
+import axios from "axios";
+import { Skeleton } from "antd";
 
 export interface ToDoItem {
   id: string;
   content: string;
+  isCompleted: boolean;
+}
+
+export class ToDoListItem {
+  id: string;
+  title: string;
   isCompleted: boolean;
 }
 
@@ -21,6 +29,24 @@ export function ToDoList() {
   const [itemArr, setItemArr] = useState<ToDoItem[]>([]);
   const [scope, setScope] = useState<Scope>(Scope.All);
   const [searchText, setSearchText] = useState("");
+  const [listItem, setListItem] = useState<ToDoListItem[]>([]);
+  const [isFetching, setIsFetching] = useState<boolean>(false);
+
+  async function getItems() {
+    try {
+      setIsFetching(() => true);
+      const data = (await axios.get("http://localhost:3333/to-do-item")).data
+        .items as ToDoListItem[];
+      setListItem(() => data);
+      setIsFetching(() => false);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  useEffect(() => {
+    getItems();
+  }, []);
 
   function updateItemArr(helper: (prevArr: ToDoItem[]) => ToDoItem[]) {
     setItemArr(helper(itemArr));
@@ -43,7 +69,7 @@ export function ToDoList() {
   }
 
   // Display mode: return items arr with corresponding status
-  function scopeFilter(filteredItem: ToDoItem[]) {
+  function scopeFilter(filteredItem: ToDoListItem[]) {
     switch (scope) {
       case Scope.All:
         return filteredItem;
@@ -69,14 +95,14 @@ export function ToDoList() {
       <br></br>
 
       <ToDoFilter sc={scope} updateScope={updateScope} />
-
-      <>
-        {scopeFilter(searchFilter()).map((todos) => (
+      {console.log(listItem)}
+      {isFetching && <Skeleton />}
+      {!isFetching &&
+        scopeFilter(listItem).map((todos) => (
           <ul key={todos.id}>
-            <ToDoItemBox todo={todos} updateItemArr={updateItemArr} />
+            <ToDoItemBox todo={todos} />
           </ul>
         ))}
-      </>
     </>
   );
 }
