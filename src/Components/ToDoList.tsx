@@ -64,7 +64,7 @@ export function ToDoList() {
 
       <br />
 
-      <ToDoForm updateItemArr={updateItemArr} />
+      <ToDoForm />
 
       <br></br>
 

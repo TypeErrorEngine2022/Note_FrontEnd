@@ -1,52 +1,45 @@
-import { ChangeEvent, FormEvent, useState } from "react";
-import { ToDoItem } from "./ToDoList";
+import axios from "axios";
+import { Form, Input, Button, Card } from "antd";
 
-interface ToDoFormProps {
-  updateItemArr: (helper: (prevArr: ToDoItem[]) => ToDoItem[]) => void;
-}
+type FieldType = {
+  title: string;
+  content: string;
+};
 
-export function ToDoForm({ updateItemArr }: ToDoFormProps) {
-  const [text, setText] = useState<string>(""); // display mode
-
-  // handle text change in create
-  function handleChange(e: ChangeEvent<HTMLInputElement>) {
-    setText(e.target.value);
-    console.log("");
-  }
-
+export function ToDoForm() {
   // submit form to add new item
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    if (text != "") {
-      updateItemArr((prevItemArr: ToDoItem[]) => [
-        ...prevItemArr,
-        { id: crypto.randomUUID(), content: text, isCompleted: false },
-      ]);
-      setText("");
+  async function handleSubmit(vals: FieldType) {
+    if (vals.title === "" && vals.content === "") {
+      return;
     }
-  }
 
-  // Display mode: delete all items, regardless of status
-  function handleClear() {
-    updateItemArr(() => []);
-    setText("");
+    const data = {
+      title: vals.title,
+      content: vals.content,
+    };
+    await axios.post("http://localhost:3333/to-do-item", data);
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        className="itemInput"
-        type="text"
-        placeholder=" Add new event"
-        value={text}
-        onChange={handleChange}
-      />
-      <button className="btn" type="submit">
-        Add
-      </button>
-      <button onClick={handleClear} className="btn dangerous">
-        Clear
-      </button>
-    </form>
+    <Card>
+      <Form
+        onFinish={(vals: FieldType) => handleSubmit(vals)}
+        labelCol={{ span: 4 }}
+      >
+        <Form.Item<FieldType> label="title" name="title">
+          <Input />
+        </Form.Item>
+
+        <Form.Item<FieldType> label="content" name="content">
+          <Input />
+        </Form.Item>
+
+        <Form.Item>
+          <Button htmlType="submit" shape="round">
+            Add
+          </Button>
+        </Form.Item>
+      </Form>
+    </Card>
   );
 }
