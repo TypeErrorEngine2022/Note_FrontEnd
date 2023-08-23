@@ -12,7 +12,7 @@ export const ToDoListCard: FC<ToDoListCardProps> = ({ todo }) => {
       className="w-[30%] my-4 inline-block mx-2"
       size="small"
       title={todo.title}
-      extra={<Checkbox value={todo.isCompleted} />}
+      extra={<Checkbox checked={todo.isCompleted} />}
     >
       {todo.preview + "..."}
     </Card>

@@ -70,22 +70,28 @@ export function ToDoList() {
   }
 
   // Display mode: return items arr with corresponding status
-  function scopeFilter(filteredItem: ToDoListItem[]) {
-    switch (scope) {
-      case Scope.All:
-        return filteredItem;
-      case Scope.Complete:
-        return filteredItem.filter((item) => item.isCompleted === true);
-      case Scope.Incomplete:
-        return filteredItem.filter((item) => item.isCompleted === false);
-      default:
-        return filteredItem;
+  async function scopeFilter() {
+    if (scope === Scope.All) {
+      getItems();
+      return;
     }
+    setIsFetching(() => true);
+    const data = (
+      await axios.get("http://localhost:3333/to-do-item/complete", {
+        params: { isCompleted: scope === Scope.Complete },
+      })
+    ).data.items as ToDoListItem[];
+    setListItem(() => data);
+    setIsFetching(() => false);
   }
+
+  useEffect(() => {
+    scopeFilter();
+  }, [scope]);
 
   return (
     <>
-      <h1>To Do List</h1>
+      <h1>Note</h1>
 
       <ToDoSearch searchText={searchText} updateSearchText={updateSearchText} />
 
@@ -96,10 +102,11 @@ export function ToDoList() {
       <br></br>
 
       <ToDoFilter sc={scope} updateScope={updateScope} />
+
       {isFetching && <Skeleton />}
       {!isFetching && (
         <div className="flex flex-wrap">
-          {scopeFilter(listItem).map((todo) => (
+          {listItem.map((todo) => (
             <ToDoListCard todo={todo} />
           ))}
         </div>
