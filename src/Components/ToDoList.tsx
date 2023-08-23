@@ -1,11 +1,11 @@
 import "../ToDoList.css";
 import { useEffect, useState } from "react";
-import { ToDoItemBox } from "./ToDoItemBox";
 import { ToDoForm } from "./ToDoForm";
 import { ToDoFilter } from "./ToDoFilter";
 import { ToDoSearch } from "./ToDoSearch";
 import axios from "axios";
 import { Skeleton } from "antd";
+import { ToDoListCard } from "./ToDoListCard";
 
 export interface ToDoItem {
   id: string;
@@ -16,6 +16,7 @@ export interface ToDoItem {
 export class ToDoListItem {
   id: string;
   title: string;
+  preview: string;
   isCompleted: boolean;
 }
 
@@ -95,14 +96,14 @@ export function ToDoList() {
       <br></br>
 
       <ToDoFilter sc={scope} updateScope={updateScope} />
-      {console.log(listItem)}
       {isFetching && <Skeleton />}
-      {!isFetching &&
-        scopeFilter(listItem).map((todos) => (
-          <ul key={todos.id}>
-            <ToDoItemBox todo={todos} />
-          </ul>
-        ))}
+      {!isFetching && (
+        <div className="flex flex-wrap">
+          {scopeFilter(listItem).map((todo) => (
+            <ToDoListCard todo={todo} />
+          ))}
+        </div>
+      )}
     </>
   );
 }
