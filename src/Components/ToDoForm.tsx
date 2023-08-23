@@ -11,6 +11,7 @@ export function ToDoForm({ updateItemArr }: ToDoFormProps) {
   // handle text change in create
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     setText(e.target.value);
+    console.log("");
   }
 
   // submit form to add new item
