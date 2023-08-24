@@ -49,6 +49,7 @@ export const ToDoForm: FC<ToDoFormProps> = ({ todo, afterFinish }) => {
       console.error(err);
     }
 
+    form.resetFields();
     if (afterFinish) afterFinish();
   }
 
