@@ -1,10 +1,11 @@
 import axios from "axios";
-import { Form, Input, Button, Card, Divider } from "antd";
+import { Form, Input, Button, Divider, Tooltip, message } from "antd";
 import { ToDoListDetailItem } from "./ToDoListCard";
-import { FC, useContext } from "react";
+import { FC, useContext, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
 import { ItemContext } from "../context/ItemContext";
 import { useForm } from "antd/es/form/Form";
+import { DeleteOutlined } from "@ant-design/icons";
 
 type FieldType = {
   title: string;
@@ -55,9 +56,22 @@ export const ToDoForm: FC<ToDoFormProps> = ({ todo, afterFinish }) => {
     await handleSubmit(form.getFieldsValue(true));
   }
 
-  console.log(todo ? todo : "no todo");
+  async function deleteItem() {
+    if (!todo) return;
+
+    try {
+      await axios.delete("http://localhost:3333/to-do-item/" + todo.id);
+      await getItems();
+      message.success("Item deleted");
+    } catch (err) {
+      console.error(err);
+    }
+
+    if (afterFinish) afterFinish();
+  }
+
   return (
-    <Card>
+    <>
       <Form
         form={form}
         onBlur={() => onFormBlur()}
@@ -83,7 +97,19 @@ export const ToDoForm: FC<ToDoFormProps> = ({ todo, afterFinish }) => {
           ></TextArea>
         </Form.Item>
 
-        <Form.Item className="flex justify-end">
+        <div className="flex" id="formFooter">
+          <span className="inline-flex flex-grow">
+            {todo && (
+              <Tooltip title="delete">
+                <DeleteOutlined
+                  key={"deleteBtn"}
+                  className="formFooterBtn"
+                  onClick={deleteItem}
+                />
+              </Tooltip>
+            )}
+          </span>
+
           <Button
             key={todo?.id || "CreateForm" + "SubmitBtn"}
             htmlType="submit"
@@ -91,8 +117,8 @@ export const ToDoForm: FC<ToDoFormProps> = ({ todo, afterFinish }) => {
           >
             {todo ? "Done" : "Add"}
           </Button>
-        </Form.Item>
+        </div>
       </Form>
-    </Card>
+    </>
   );
 };

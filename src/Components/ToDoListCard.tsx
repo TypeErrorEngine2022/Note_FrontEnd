@@ -51,10 +51,12 @@ export const ToDoListCard: FC<ToDoListCardProps> = ({ todo }) => {
           onCancel={() => setShowModal(() => false)}
           footer={null}
         >
-          <ToDoForm
-            todo={detailItem}
-            afterFinish={() => setShowModal(() => false)}
-          />
+          <div className="m-4">
+            <ToDoForm
+              todo={detailItem}
+              afterFinish={() => setShowModal(() => false)}
+            />
+          </div>
         </Modal>
       )}
     </>

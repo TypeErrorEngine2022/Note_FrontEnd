@@ -4,7 +4,7 @@ import { ToDoForm } from "./ToDoForm";
 import { ToDoFilter } from "./ToDoFilter";
 import { ToDoSearch } from "./ToDoSearch";
 import axios from "axios";
-import { Skeleton } from "antd";
+import { Divider, Skeleton } from "antd";
 import { ToDoListCard } from "./ToDoListCard";
 import { ItemContext, ItemContextType } from "../context/ItemContext";
 
@@ -78,9 +78,11 @@ export function ToDoList() {
 
       <br />
 
+      <Divider></Divider>
+
       <ToDoForm />
 
-      <br></br>
+      <Divider></Divider>
 
       <ToDoFilter sc={scope} updateScope={updateScope} />
 
