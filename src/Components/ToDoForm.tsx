@@ -74,13 +74,16 @@ export const ToDoForm: FC<ToDoFormProps> = ({ todo, afterFinish }) => {
     <>
       <Form
         form={form}
+        initialValues={{
+          ["title"]: todo?.title || "",
+          ["content"]: todo?.content || "",
+        }}
         onBlur={() => onFormBlur()}
         onFinish={(vals: FieldType) => handleSubmit(vals)}
       >
         <Form.Item<FieldType> name="title">
           <Input
             key={todo?.id || "CreateForm" + "TitleInput"}
-            defaultValue={todo?.title || ""}
             placeholder="title"
             bordered={false}
           />
@@ -91,7 +94,6 @@ export const ToDoForm: FC<ToDoFormProps> = ({ todo, afterFinish }) => {
         <Form.Item<FieldType> name="content">
           <TextArea
             key={todo?.id || "CreateForm" + "ContentInput"}
-            defaultValue={todo?.content || ""}
             placeholder="content"
             bordered={false}
           ></TextArea>
