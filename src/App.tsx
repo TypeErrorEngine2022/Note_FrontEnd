@@ -1,7 +1,12 @@
-import { ToDoList } from './Components/ToDoList'
+import { ToDoList } from "./Components/ToDoList";
+import { ItemContextProvider } from "./context/ItemContext";
 
 function App() {
-  return <ToDoList />
+  return (
+    <ItemContextProvider>
+      <ToDoList />
+    </ItemContextProvider>
+  );
 }
 
-export default App
+export default App;

@@ -1,15 +1,33 @@
 import axios from "axios";
-import { Form, Input, Button, Card } from "antd";
+import { Form, Input, Button, Card, Divider } from "antd";
+import { ToDoListDetailItem } from "./ToDoListCard";
+import { FC, useContext } from "react";
+import TextArea from "antd/es/input/TextArea";
+import { ItemContext } from "../context/ItemContext";
+import { useForm } from "antd/es/form/Form";
 
 type FieldType = {
   title: string;
   content: string;
 };
 
-export function ToDoForm() {
+interface ToDoFormProps {
+  todo?: ToDoListDetailItem;
+  afterFinish?: () => void;
+}
+
+export const ToDoForm: FC<ToDoFormProps> = ({ todo, afterFinish }) => {
+  const { getItems } = useContext(ItemContext);
+  const [form] = useForm();
+
+  const isFalsy = (val: string | null | undefined) => {
+    return val == null || val == "";
+  };
+
   // submit form to add new item
   async function handleSubmit(vals: FieldType) {
-    if (vals.title === "" && vals.content === "") {
+    if (isFalsy(vals.title) && isFalsy(vals.content)) {
+      if (afterFinish) afterFinish();
       return;
     }
 
@@ -17,29 +35,64 @@ export function ToDoForm() {
       title: vals.title,
       content: vals.content,
     };
-    await axios.post("http://localhost:3333/to-do-item", data);
+
+    try {
+      if (todo) {
+        await axios.put("http://localhost:3333/to-do-item/" + todo.id, data);
+      } else {
+        await axios.post("http://localhost:3333/to-do-item", data);
+      }
+
+      await getItems();
+    } catch (err) {
+      console.error(err);
+    }
+
+    if (afterFinish) afterFinish();
   }
 
+  async function onFormBlur() {
+    await handleSubmit(form.getFieldsValue(true));
+  }
+
+  console.log(todo ? todo : "no todo");
   return (
     <Card>
       <Form
+        form={form}
+        onBlur={() => onFormBlur()}
         onFinish={(vals: FieldType) => handleSubmit(vals)}
-        labelCol={{ span: 4 }}
       >
-        <Form.Item<FieldType> label="title" name="title">
-          <Input />
+        <Form.Item<FieldType> name="title">
+          <Input
+            key={todo?.id || "CreateForm" + "TitleInput"}
+            defaultValue={todo?.title || ""}
+            placeholder="title"
+            bordered={false}
+          />
         </Form.Item>
 
-        <Form.Item<FieldType> label="content" name="content">
-          <Input />
+        <Divider className="my-2"></Divider>
+
+        <Form.Item<FieldType> name="content">
+          <TextArea
+            key={todo?.id || "CreateForm" + "ContentInput"}
+            defaultValue={todo?.content || ""}
+            placeholder="content"
+            bordered={false}
+          ></TextArea>
         </Form.Item>
 
-        <Form.Item>
-          <Button htmlType="submit" shape="round">
-            Add
+        <Form.Item className="flex justify-end">
+          <Button
+            key={todo?.id || "CreateForm" + "SubmitBtn"}
+            htmlType="submit"
+            shape="round"
+          >
+            {todo ? "Done" : "Add"}
           </Button>
         </Form.Item>
       </Form>
     </Card>
   );
-}
+};
