@@ -37,14 +37,6 @@ export function ToDoList() {
     setScope(sc);
   }
 
-  // function searchFilter() {
-  //   if (searchText != "") {
-  //     return itemArr.filter((item) =>
-  //       item.content.toLowerCase().includes(searchText.toLowerCase())
-  //     );
-  //   } else return itemArr;
-  // }
-
   // Display mode: return items arr with corresponding status
   async function scopeFilter() {
     if (scope === Scope.All) {
