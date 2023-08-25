@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Form, Input, Button, Divider, Tooltip, message } from "antd";
 import { ToDoListDetailItem } from "./ToDoListCard";
-import { FC, useContext, useState } from "react";
+import { FC, useContext } from "react";
 import TextArea from "antd/es/input/TextArea";
 import { ItemContext } from "../context/ItemContext";
 import { useForm } from "antd/es/form/Form";
@@ -85,7 +85,7 @@ export const ToDoForm: FC<ToDoFormProps> = ({ todo, afterFinish }) => {
         <Form.Item<FieldType> name="title">
           <Input
             key={todo?.id || "CreateForm" + "TitleInput"}
-            placeholder="title"
+            placeholder="title (Optional)"
             bordered={false}
           />
         </Form.Item>
@@ -101,15 +101,17 @@ export const ToDoForm: FC<ToDoFormProps> = ({ todo, afterFinish }) => {
         </Form.Item>
 
         <div className="flex" id="formFooter">
-          <span className="inline-flex flex-grow">
+          <span className="inline-flex flex-grow items-baseline">
             {todo && (
-              <Tooltip title="delete">
-                <DeleteOutlined
-                  key={"deleteBtn"}
-                  className="formFooterBtn"
-                  onClick={deleteItem}
-                />
-              </Tooltip>
+              <>
+                <Tooltip title="delete">
+                  <DeleteOutlined
+                    key={todo.id + "deleteBtn"}
+                    className="formFooterBtn"
+                    onClick={deleteItem}
+                  />
+                </Tooltip>
+              </>
             )}
           </span>
 
