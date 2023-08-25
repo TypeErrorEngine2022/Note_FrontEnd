@@ -29,17 +29,12 @@ export enum Scope {
 
 export function ToDoList() {
   const [scope, setScope] = useState<Scope>(Scope.All);
-  const [searchText, setSearchText] = useState("");
   const { listItems, setListItems, getItems } =
     useContext<ItemContextType>(ItemContext);
   const [isFetching, setIsFetching] = useState<boolean>(false);
 
   function updateScope(sc: Scope) {
     setScope(sc);
-  }
-
-  function updateSearchText(helper: () => string) {
-    setSearchText(helper());
   }
 
   // function searchFilter() {
@@ -53,7 +48,7 @@ export function ToDoList() {
   // Display mode: return items arr with corresponding status
   async function scopeFilter() {
     if (scope === Scope.All) {
-      getItems();
+      await getItems();
       return;
     }
     setIsFetching(() => true);
@@ -74,9 +69,7 @@ export function ToDoList() {
     <>
       <h1>Note</h1>
 
-      <ToDoSearch searchText={searchText} updateSearchText={updateSearchText} />
-
-      <br />
+      <ToDoSearch />
 
       <Divider></Divider>
 

@@ -21,13 +21,9 @@ export const ToDoForm: FC<ToDoFormProps> = ({ todo, afterFinish }) => {
   const { getItems } = useContext(ItemContext);
   const [form] = useForm();
 
-  const isFalsy = (val: string | null | undefined) => {
-    return val == null || val == "";
-  };
-
   // submit form to add new item
   async function handleSubmit(vals: FieldType) {
-    if (isFalsy(vals.title) && isFalsy(vals.content)) {
+    if (!vals.title && !vals.content) {
       if (afterFinish) afterFinish();
       return;
     }

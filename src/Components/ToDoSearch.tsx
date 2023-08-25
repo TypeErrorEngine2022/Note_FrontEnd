@@ -1,29 +1,51 @@
-import { ChangeEvent } from "react";
+import { SearchOutlined } from "@ant-design/icons";
+import { Form, Input } from "antd";
+import { useForm } from "antd/es/form/Form";
+import axios from "axios";
+import { useContext } from "react";
+import { ItemContext } from "../context/ItemContext";
+import { ToDoListItem } from "./ToDoList";
 
-interface ToDoSearchProps {
-  updateSearchText: (helper: () => string) => void;
-  searchText: string;
-}
+type GetListResponse = {
+  items: ToDoListItem[];
+  page: number;
+  pageSize: number;
+  total: number;
+};
 
-export function ToDoSearch({ searchText, updateSearchText }: ToDoSearchProps) {
-  function onSearchTextChange(e: ChangeEvent<HTMLInputElement>) {
-    e.preventDefault();
-    const newText = e.target.value;
-    updateSearchText(() => newText);
+export function ToDoSearch() {
+  const [form] = useForm();
+  const { getItems, setListItems } = useContext(ItemContext);
+
+  async function getSearchItems() {
+    const searchContent = form.getFieldValue("searchBar") as string;
+    if (searchContent === "") {
+      await getItems();
+    }
+
+    try {
+      const response = (
+        await axios.get("http://localhost:3333/to-do-item", {
+          params: { searchContent: searchContent },
+        })
+      ).data as GetListResponse;
+      setListItems(() => response.items);
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   return (
-    <div>
-      <form role="search" className="searchForm">
-        Search:
-        <input
-          className="searchInput"
-          type="search"
-          placeholder=" Search"
-          value={searchText}
-          onChange={(e) => onSearchTextChange(e)}
+    <Form form={form} onChange={getSearchItems}>
+      <Form.Item name="searchBar">
+        <Input
+          className="bg-gray-100 outline outline-[1px]"
+          size="large"
+          bordered={false}
+          prefix={<SearchOutlined />}
+          placeholder="Search"
         />
-      </form>
-    </div>
+      </Form.Item>
+    </Form>
   );
 }

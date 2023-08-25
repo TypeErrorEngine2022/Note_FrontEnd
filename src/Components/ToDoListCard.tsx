@@ -46,7 +46,7 @@ export const ToDoListCard: FC<ToDoListCardProps> = ({ todo }) => {
         "http://localhost:3333/to-do-item/" + todo.id + "/complete",
         { isCompleted: !todo.isCompleted }
       );
-      getItems();
+      await getItems();
       setIsLoading(false);
     } catch (err) {
       console.error(err);
