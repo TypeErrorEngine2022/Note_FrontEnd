@@ -51,14 +51,18 @@ export function ToDoList() {
       await getItems();
       return;
     }
-    setIsFetching(() => true);
-    const data = (
-      await axios.get("http://localhost:3333/to-do-item/complete", {
-        params: { isCompleted: scope === Scope.Complete },
-      })
-    ).data.items as ToDoListItem[];
-    setListItems(() => data);
-    setIsFetching(() => false);
+    try {
+      setIsFetching(() => true);
+      const data = (
+        await axios.get("http://localhost:3333/to-do-item/complete", {
+          params: { isCompleted: scope === Scope.Complete },
+        })
+      ).data.items as ToDoListItem[];
+      setListItems(() => data);
+      setIsFetching(() => false);
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   useEffect(() => {
