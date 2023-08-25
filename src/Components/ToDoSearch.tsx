@@ -3,19 +3,12 @@ import { Form, Input } from "antd";
 import { useForm } from "antd/es/form/Form";
 import axios from "axios";
 import { useContext } from "react";
-import { ItemContext } from "../context/ItemContext";
+import { ItemContext, PaginatedList } from "../context/ItemContext";
 import { ToDoListItem } from "./ToDoList";
-
-type GetListResponse = {
-  items: ToDoListItem[];
-  page: number;
-  pageSize: number;
-  total: number;
-};
 
 export function ToDoSearch() {
   const [form] = useForm();
-  const { getItems, setListItems } = useContext(ItemContext);
+  const { setPaginatedListItems, getItems } = useContext(ItemContext);
 
   async function getSearchItems() {
     const searchContent = form.getFieldValue("searchBar") as string;
@@ -28,8 +21,8 @@ export function ToDoSearch() {
         await axios.get("http://localhost:3333/to-do-item", {
           params: { searchContent: searchContent },
         })
-      ).data as GetListResponse;
-      setListItems(() => response.items);
+      ).data as PaginatedList<ToDoListItem>;
+      setPaginatedListItems(() => response);
     } catch (err) {
       console.error(err);
     }

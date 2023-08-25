@@ -6,7 +6,12 @@ import { ToDoSearch } from "./ToDoSearch";
 import axios from "axios";
 import { Divider, Skeleton } from "antd";
 import { ToDoListCard } from "./ToDoListCard";
-import { ItemContext, ItemContextType } from "../context/ItemContext";
+import {
+  ItemContext,
+  ItemContextType,
+  PaginatedList,
+} from "../context/ItemContext";
+import { ToDoListPagination } from "./ToDoListPagination";
 
 export interface ToDoItem {
   id: string;
@@ -29,21 +34,13 @@ export enum Scope {
 
 export function ToDoList() {
   const [scope, setScope] = useState<Scope>(Scope.All);
-  const { listItems, setListItems, getItems } =
+  const { paginatedListItems, setPaginatedListItems, getItems } =
     useContext<ItemContextType>(ItemContext);
   const [isFetching, setIsFetching] = useState<boolean>(false);
 
   function updateScope(sc: Scope) {
     setScope(sc);
   }
-
-  // function searchFilter() {
-  //   if (searchText != "") {
-  //     return itemArr.filter((item) =>
-  //       item.content.toLowerCase().includes(searchText.toLowerCase())
-  //     );
-  //   } else return itemArr;
-  // }
 
   // Display mode: return items arr with corresponding status
   async function scopeFilter() {
@@ -57,8 +54,8 @@ export function ToDoList() {
         await axios.get("http://localhost:3333/to-do-item/complete", {
           params: { isCompleted: scope === Scope.Complete },
         })
-      ).data.items as ToDoListItem[];
-      setListItems(() => data);
+      ).data as PaginatedList<ToDoListItem>;
+      setPaginatedListItems(() => data);
       setIsFetching(() => false);
     } catch (err) {
       console.error(err);
@@ -85,9 +82,11 @@ export function ToDoList() {
 
       {isFetching && <Skeleton />}
 
+      {!isFetching && <ToDoListPagination />}
+
       {!isFetching && (
         <div className="flex flex-wrap">
-          {listItems.map((todo) => (
+          {paginatedListItems.items.map((todo) => (
             <ToDoListCard key={"card" + todo.id} todo={todo} />
           ))}
         </div>
