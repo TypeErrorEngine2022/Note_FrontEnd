@@ -1,32 +1,25 @@
 import { Pagination } from "antd";
 import { useContext } from "react";
 import {
+  GetListParams,
   ItemContext,
   ItemContextType,
-  PaginatedList,
 } from "../context/ItemContext";
-import axios from "axios";
-import { ToDoListItem } from "./ToDoList";
 
 export const ToDoListPagination = () => {
-  const { paginatedListItems, setPaginatedListItems } =
+  const { paginatedListItems, setParams } =
     useContext<ItemContextType>(ItemContext);
 
   async function updatePage(page: number, pageSize: number) {
-    try {
-      const options = {
-        page: page,
-        pageSize: pageSize,
-      };
-      const response = (
-        await axios.get("http://localhost:3333/to-do-item", {
-          params: options,
-        })
-      ).data as PaginatedList<ToDoListItem>;
-      setPaginatedListItems(() => response);
-    } catch (err) {
-      console.error(err);
-    }
+    setParams(
+      (prevParams) =>
+        new GetListParams(
+          page,
+          pageSize,
+          prevParams.searchContent,
+          prevParams.isCompleted
+        )
+    );
   }
 
   return (

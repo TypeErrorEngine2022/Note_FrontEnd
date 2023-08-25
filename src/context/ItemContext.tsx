@@ -9,12 +9,39 @@ export class PaginatedList<T> {
   total: number;
 }
 
+export enum Scope {
+  All = 1,
+  Complete,
+  Incomplete,
+}
+
+export class GetListParams {
+  page? = 1;
+  pageSize? = 10;
+  searchContent?: string;
+  isCompleted?: boolean;
+
+  constructor(
+    page?: number,
+    pageSize?: number,
+    searchContent?: string,
+    isCompleted?: boolean
+  ) {
+    this.page = page || 1;
+    this.pageSize = pageSize || 1;
+    this.searchContent = searchContent;
+    this.isCompleted = isCompleted;
+  }
+}
+
 export type ItemContextType = {
   paginatedListItems: PaginatedList<ToDoListItem>;
   setPaginatedListItems: React.Dispatch<
     React.SetStateAction<PaginatedList<ToDoListItem>>
   >;
   getItems: () => Promise<void>;
+  isFetching: boolean;
+  setParams: React.Dispatch<React.SetStateAction<GetListParams>>;
 };
 
 export const ItemContext = createContext<ItemContextType>({
@@ -28,6 +55,8 @@ export const ItemContext = createContext<ItemContextType>({
   getItems: () => {
     return new Promise(() => {});
   },
+  isFetching: false,
+  setParams: () => {},
 });
 
 export const ItemContextProvider = ({
@@ -42,11 +71,24 @@ export const ItemContextProvider = ({
     total: 0,
   });
 
+  const [isFetching, setIsFetching] = useState<boolean>(false);
+  const [params, setParams] = useState<GetListParams>({
+    page: 1,
+    pageSize: 10,
+  });
+
   async function getItems() {
     try {
-      const data = (await axios.get("http://localhost:3333/to-do-item"))
-        .data as PaginatedList<ToDoListItem>;
+      setIsFetching(() => true);
+      console.log("fetching using");
+      console.log(params);
+      const data = (
+        await axios.get("http://localhost:3333/to-do-item", {
+          params: params,
+        })
+      ).data as PaginatedList<ToDoListItem>;
       setPaginatedListItems(() => data);
+      setIsFetching(() => false);
     } catch (err) {
       console.error(err);
     }
@@ -55,11 +97,17 @@ export const ItemContextProvider = ({
   useEffect(() => {
     getItems();
     console.log(paginatedListItems);
-  }, []);
+  }, [params]);
 
   return (
     <ItemContext.Provider
-      value={{ paginatedListItems, setPaginatedListItems, getItems }}
+      value={{
+        paginatedListItems,
+        setPaginatedListItems,
+        getItems,
+        isFetching,
+        setParams,
+      }}
     >
       {children}
     </ItemContext.Provider>

@@ -1,30 +1,37 @@
 import { SearchOutlined } from "@ant-design/icons";
 import { Form, Input } from "antd";
 import { useForm } from "antd/es/form/Form";
-import axios from "axios";
 import { useContext } from "react";
-import { ItemContext, PaginatedList } from "../context/ItemContext";
-import { ToDoListItem } from "./ToDoList";
+import { GetListParams, ItemContext } from "../context/ItemContext";
 
 export function ToDoSearch() {
   const [form] = useForm();
-  const { setPaginatedListItems, getItems } = useContext(ItemContext);
+  const { setParams } = useContext(ItemContext);
 
   async function getSearchItems() {
     const searchContent = form.getFieldValue("searchBar") as string;
-    if (searchContent === "") {
-      await getItems();
-    }
 
-    try {
-      const response = (
-        await axios.get("http://localhost:3333/to-do-item", {
-          params: { searchContent: searchContent },
-        })
-      ).data as PaginatedList<ToDoListItem>;
-      setPaginatedListItems(() => response);
-    } catch (err) {
-      console.error(err);
+    if (searchContent === "") {
+      setParams(
+        (prevParams) =>
+          new GetListParams(
+            prevParams.page,
+            prevParams.pageSize,
+            undefined,
+            prevParams.isCompleted
+          )
+      );
+    } else {
+      // after search, no.of total items may be different, so got back to default: {page: 1, pageSize: 10}
+      setParams(
+        (prevParams) =>
+          new GetListParams(
+            undefined,
+            prevParams.pageSize,
+            searchContent,
+            prevParams.isCompleted
+          )
+      );
     }
   }
 

@@ -1,31 +1,44 @@
-import { Scope } from "./ToDoList";
+import { useContext } from "react";
+import {
+  ItemContextType,
+  ItemContext,
+  Scope,
+  GetListParams,
+} from "../context/ItemContext";
+import { Button } from "antd";
 
-interface ToDoFilterProps {
-  sc: Scope;
-  updateScope: (sc: Scope) => void;
-}
+export function ToDoFilter() {
+  const { setParams } = useContext<ItemContextType>(ItemContext);
 
-export function ToDoFilter({ sc, updateScope }: ToDoFilterProps) {
+  async function scopeFilter(scope: Scope) {
+    if (scope === Scope.All) {
+      setParams(
+        (prevParams) =>
+          new GetListParams(
+            undefined,
+            prevParams.pageSize,
+            prevParams.searchContent,
+            undefined
+          )
+      );
+    } else {
+      setParams(
+        (prevParams) =>
+          new GetListParams(
+            undefined,
+            prevParams.pageSize,
+            prevParams.searchContent,
+            scope === Scope.Complete
+          )
+      );
+    }
+  }
+
   return (
     <div>
-      <button
-        className={sc === Scope.All ? "btn activefilter" : "btn"}
-        onClick={() => updateScope(Scope.All)}
-      >
-        All
-      </button>
-      <button
-        className={sc === Scope.Complete ? "btn activefilter" : "btn"}
-        onClick={() => updateScope(Scope.Complete)}
-      >
-        Complete
-      </button>
-      <button
-        className={sc === Scope.Incomplete ? "btn activefilter" : "btn"}
-        onClick={() => updateScope(Scope.Incomplete)}
-      >
-        Incomplete
-      </button>
+      <Button onClick={() => scopeFilter(Scope.All)}>All</Button>
+      <Button onClick={() => scopeFilter(Scope.Complete)}>Complete</Button>
+      <Button onClick={() => scopeFilter(Scope.Incomplete)}>Incomplete</Button>
     </div>
   );
 }
