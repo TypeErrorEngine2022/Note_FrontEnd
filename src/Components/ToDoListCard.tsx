@@ -57,9 +57,9 @@ export const ToDoListCard: FC<ToDoListCardProps> = ({ todo }) => {
     <>
       <Card
         key={todo.id + "Card"}
-        className="w-[30%] my-4 inline-block mx-2"
+        className="w-[30%] min-h-[10em] my-4 inline-block mx-2"
         size="small"
-        title={todo.title || ""}
+        title={todo.title || "No Title"}
         hoverable={true}
         actions={[
           <Button

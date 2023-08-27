@@ -3,10 +3,13 @@ import { useContext } from "react";
 import { ToDoForm } from "./ToDoForm";
 import { ToDoFilter } from "./ToDoFilter";
 import { ToDoSearch } from "./ToDoSearch";
-import { Divider, Skeleton } from "antd";
+import { Divider, Layout, Menu, Skeleton } from "antd";
 import { ToDoListCard } from "./ToDoListCard";
 import { ItemContext, ItemContextType } from "../context/ItemContext";
 import { ToDoListPagination } from "./ToDoListPagination";
+import { Content, Header } from "antd/es/layout/layout";
+import { CarryOutOutlined } from "@ant-design/icons";
+import Sider from "antd/es/layout/Sider";
 
 export interface ToDoItem {
   id: string;
@@ -26,30 +29,42 @@ export function ToDoList() {
     useContext<ItemContextType>(ItemContext);
 
   return (
-    <>
-      <h1>Note</h1>
+    <Layout className="w-[100vw] min-h-[100vh] bg-white">
+      <Header className="bg-white border-b-4 flex items-center">
+        <CarryOutOutlined className="text-4xl mr-8" />
+        <span className="w-[50vw]">
+          <ToDoSearch />
+        </span>
+      </Header>
+      <Layout>
+        <Content>
+          <div className="mx-16 mt-8">
+            <ToDoForm />
+          </div>
 
-      <ToDoSearch />
+          <Divider></Divider>
 
-      <Divider></Divider>
+          <span className="flex justify-center items-center my-4">
+            <ToDoFilter />
+          </span>
 
-      <ToDoForm />
+          {isFetching && <Skeleton />}
 
-      <Divider></Divider>
+          {!isFetching && (
+            <span className="flex justify-center items-center">
+              <ToDoListPagination />
+            </span>
+          )}
 
-      <ToDoFilter />
-
-      {isFetching && <Skeleton />}
-
-      {!isFetching && <ToDoListPagination />}
-
-      {!isFetching && (
-        <div className="flex flex-wrap">
-          {paginatedListItems.items.map((todo) => (
-            <ToDoListCard key={"card" + todo.id} todo={todo} />
-          ))}
-        </div>
-      )}
-    </>
+          {!isFetching && (
+            <div className="flex flex-wrap justify-center">
+              {paginatedListItems.items.map((todo) => (
+                <ToDoListCard key={"card" + todo.id} todo={todo} />
+              ))}
+            </div>
+          )}
+        </Content>
+      </Layout>
+    </Layout>
   );
 }

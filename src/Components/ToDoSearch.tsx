@@ -36,9 +36,10 @@ export function ToDoSearch() {
   }
 
   return (
-    <Form form={form} onChange={getSearchItems}>
-      <Form.Item name="searchBar">
+    <Form key="searchForm" form={form} onChange={getSearchItems}>
+      <Form.Item className="my-0" name="searchBar">
         <Input
+          key="searchBarInput"
           className="bg-gray-100 outline outline-[1px]"
           size="large"
           bordered={false}
