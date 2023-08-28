@@ -1,15 +1,13 @@
-import "../ToDoList.css";
 import { useContext } from "react";
-import { ToDoForm } from "./ToDoForm";
+import { Button, Col, Divider, Row, Skeleton } from "antd";
+import Layout, { Content, Header } from "antd/lib/layout/layout";
+import { CarryOutOutlined, UserOutlined } from "@ant-design/icons";
+import { ItemContextType, ItemContext } from "../context/ItemContext";
 import { ToDoFilter } from "./ToDoFilter";
-import { ToDoSearch } from "./ToDoSearch";
-import { Divider, Layout, Menu, Skeleton } from "antd";
+import { ToDoForm } from "./ToDoForm";
 import { ToDoListCard } from "./ToDoListCard";
-import { ItemContext, ItemContextType } from "../context/ItemContext";
 import { ToDoListPagination } from "./ToDoListPagination";
-import { Content, Header } from "antd/es/layout/layout";
-import { CarryOutOutlined } from "@ant-design/icons";
-import Sider from "antd/es/layout/Sider";
+import { ToDoSearch } from "./ToDoSearch";
 
 export interface ToDoItem {
   id: string;
@@ -24,19 +22,37 @@ export class ToDoListItem {
   isCompleted: boolean;
 }
 
-export function ToDoList() {
+export const ToDoList = () => {
   const { paginatedListItems, isFetching } =
     useContext<ItemContextType>(ItemContext);
 
   return (
     <Layout className="w-[100vw] min-h-[100vh] bg-white">
-      <Header className="bg-white border-b-4 flex items-center">
-        <CarryOutOutlined className="text-4xl mr-8" />
-        <span className="w-[50vw]">
-          <ToDoSearch />
-        </span>
+      <Header className="bg-white border-b-4">
+        <Row justify="space-around" align="middle">
+          <Col md={{ span: 2 }} lg={{ span: 2, offset: 1 }}>
+            <CarryOutOutlined className="text-4xl mr-2 lg:mr-8" />
+          </Col>
+          <Col md={{ span: 8 }} lg={{ span: 8 }} className="flex justify-start">
+            <span className="w-[25vw] lg:w-[50vw] mr-2">
+              <ToDoSearch />
+            </span>
+          </Col>
+          <Col
+            md={{ span: 4, offset: 10 }}
+            lg={{ span: 6, offset: 7 }}
+            className="flex justify-end"
+          >
+            <Button
+              icon={<UserOutlined className="" />}
+              className="flex justify-center items-center"
+              shape="circle"
+              key={"userBtn"}
+            ></Button>
+          </Col>
+        </Row>
       </Header>
-      <Layout>
+      <Layout hasSider={true}>
         <Content>
           <div className="mx-16 mt-8">
             <ToDoForm />
@@ -67,4 +83,4 @@ export function ToDoList() {
       </Layout>
     </Layout>
   );
-}
+};
