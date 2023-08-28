@@ -41,6 +41,7 @@ export type ItemContextType = {
   >;
   getItems: () => Promise<void>;
   isFetching: boolean;
+  params: GetListParams;
   setParams: React.Dispatch<React.SetStateAction<GetListParams>>;
 };
 
@@ -56,6 +57,7 @@ export const ItemContext = createContext<ItemContextType>({
     return new Promise(() => {});
   },
   isFetching: false,
+  params: new GetListParams(1, 10),
   setParams: () => {},
 });
 
@@ -106,6 +108,7 @@ export const ItemContextProvider = ({
         setPaginatedListItems,
         getItems,
         isFetching,
+        params,
         setParams,
       }}
     >

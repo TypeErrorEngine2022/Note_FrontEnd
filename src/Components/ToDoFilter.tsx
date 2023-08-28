@@ -8,7 +8,7 @@ import {
 import { Button } from "antd";
 
 export function ToDoFilter() {
-  const { setParams } = useContext<ItemContextType>(ItemContext);
+  const { params, setParams } = useContext<ItemContextType>(ItemContext);
 
   async function scopeFilter(scope: Scope) {
     if (scope === Scope.All) {
@@ -36,9 +36,30 @@ export function ToDoFilter() {
 
   return (
     <div>
-      <Button onClick={() => scopeFilter(Scope.All)}>All</Button>
-      <Button onClick={() => scopeFilter(Scope.Complete)}>Complete</Button>
-      <Button onClick={() => scopeFilter(Scope.Incomplete)}>Incomplete</Button>
+      <Button
+        style={{
+          borderColor: params.isCompleted == null ? "blue" : "gray",
+        }}
+        onClick={() => scopeFilter(Scope.All)}
+      >
+        All
+      </Button>
+      <Button
+        style={{
+          borderColor: params.isCompleted === true ? "blue" : "gray",
+        }}
+        onClick={() => scopeFilter(Scope.Complete)}
+      >
+        Complete
+      </Button>
+      <Button
+        style={{
+          borderColor: params.isCompleted === false ? "blue" : "gray",
+        }}
+        onClick={() => scopeFilter(Scope.Incomplete)}
+      >
+        Incomplete
+      </Button>
     </div>
   );
 }
