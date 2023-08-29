@@ -1,7 +1,7 @@
 import { useContext } from "react";
-import { Button, Col, Divider, Row, Select, Skeleton } from "antd";
+import { Col, Divider, Row, Select, Skeleton } from "antd";
 import Layout, { Content, Header } from "antd/lib/layout/layout";
-import { CarryOutOutlined, UserOutlined } from "@ant-design/icons";
+import { CarryOutOutlined } from "@ant-design/icons";
 import { ItemContextType, ItemContext } from "../context/ItemContext";
 import { ToDoFilter } from "./ToDoFilter";
 import { ToDoForm } from "./ToDoForm";
