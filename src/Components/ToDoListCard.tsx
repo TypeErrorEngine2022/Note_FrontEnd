@@ -4,6 +4,7 @@ import { Button, Card, Modal, Skeleton } from "antd";
 import axios from "axios";
 import { ToDoForm } from "./ToDoForm";
 import { ItemContext } from "../context/ItemContext";
+import { useTranslation } from "react-i18next";
 
 interface ToDoListCardProps {
   todo: ToDoListItem;
@@ -22,6 +23,7 @@ export const ToDoListCard: FC<ToDoListCardProps> = ({ todo }) => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [detailItem, setDetailItem] = useState<ToDoListDetailItem>();
+  const { t } = useTranslation();
 
   const getDetailItem = async () => {
     const res = await axios.get(
@@ -69,7 +71,7 @@ export const ToDoListCard: FC<ToDoListCardProps> = ({ todo }) => {
             style={{ color: todo.isCompleted ? "rgb(22 163 74)" : "gray" }}
             onClick={() => updateIsComplete()}
           >
-            Done
+            {t("DONE")}
           </Button>,
         ]}
       >

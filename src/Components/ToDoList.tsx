@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Button, Col, Divider, Row, Skeleton } from "antd";
+import { Button, Col, Divider, Row, Select, Skeleton } from "antd";
 import Layout, { Content, Header } from "antd/lib/layout/layout";
 import { CarryOutOutlined, UserOutlined } from "@ant-design/icons";
 import { ItemContextType, ItemContext } from "../context/ItemContext";
@@ -8,6 +8,7 @@ import { ToDoForm } from "./ToDoForm";
 import { ToDoListCard } from "./ToDoListCard";
 import { ToDoListPagination } from "./ToDoListPagination";
 import { ToDoSearch } from "./ToDoSearch";
+import { useTranslation } from "react-i18next";
 
 export interface ToDoItem {
   id: string;
@@ -25,6 +26,7 @@ export class ToDoListItem {
 export const ToDoList = () => {
   const { paginatedListItems, isFetching } =
     useContext<ItemContextType>(ItemContext);
+  const { i18n } = useTranslation();
 
   return (
     <Layout className="w-[100vw] min-h-[100vh] bg-white">
@@ -43,12 +45,21 @@ export const ToDoList = () => {
             lg={{ span: 6, offset: 7 }}
             className="flex justify-end"
           >
-            <Button
+            <Select
+              defaultValue={"zh-HK"}
+              onChange={(lang: string) => i18n.changeLanguage(lang)}
+              options={[
+                { value: "en-US", label: "English" },
+                { value: "zh-CN", label: "中文（简体)" },
+                { value: "zh-HK", label: "中文（繁体)" },
+              ]}
+            ></Select>
+            {/* <Button
               icon={<UserOutlined className="" />}
               className="flex justify-center items-center"
               shape="circle"
               key={"userBtn"}
-            ></Button>
+            ></Button> */}
           </Col>
         </Row>
       </Header>

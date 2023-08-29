@@ -6,9 +6,11 @@ import {
   GetListParams,
 } from "../context/ItemContext";
 import { Button } from "antd";
+import { useTranslation } from "react-i18next";
 
 export function ToDoFilter() {
   const { params, setParams } = useContext<ItemContextType>(ItemContext);
+  const { t } = useTranslation();
 
   async function scopeFilter(scope: Scope) {
     if (scope === Scope.All) {
@@ -42,7 +44,7 @@ export function ToDoFilter() {
         }}
         onClick={() => scopeFilter(Scope.All)}
       >
-        All
+        {t("ALL")}
       </Button>
       <Button
         style={{
@@ -50,7 +52,7 @@ export function ToDoFilter() {
         }}
         onClick={() => scopeFilter(Scope.Complete)}
       >
-        Complete
+        {t("COMPLETE")}
       </Button>
       <Button
         style={{
@@ -58,7 +60,7 @@ export function ToDoFilter() {
         }}
         onClick={() => scopeFilter(Scope.Incomplete)}
       >
-        Incomplete
+        {t("INCOMPLETE")}
       </Button>
     </div>
   );

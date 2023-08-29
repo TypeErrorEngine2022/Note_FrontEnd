@@ -6,6 +6,7 @@ import TextArea from "antd/es/input/TextArea";
 import { ItemContext } from "../context/ItemContext";
 import { useForm } from "antd/es/form/Form";
 import { DeleteOutlined } from "@ant-design/icons";
+import { useTranslation } from "react-i18next";
 
 type FieldType = {
   title: string;
@@ -20,6 +21,7 @@ interface ToDoFormProps {
 export const ToDoForm: FC<ToDoFormProps> = ({ todo, afterFinish }) => {
   const { getItems } = useContext(ItemContext);
   const [form] = useForm();
+  const { t } = useTranslation();
 
   // submit form to add new item
   async function handleSubmit(vals: FieldType) {
@@ -81,7 +83,7 @@ export const ToDoForm: FC<ToDoFormProps> = ({ todo, afterFinish }) => {
         <Form.Item<FieldType> name="title">
           <Input
             key={todo?.id || "CreateForm" + "TitleInput"}
-            placeholder="title (Optional)"
+            placeholder={`${t("TITLE")} (${t("OPTIONAL")})`}
             bordered={false}
           />
         </Form.Item>
@@ -91,7 +93,7 @@ export const ToDoForm: FC<ToDoFormProps> = ({ todo, afterFinish }) => {
         <Form.Item<FieldType> name="content">
           <TextArea
             key={todo?.id || "CreateForm" + "ContentInput"}
-            placeholder="content"
+            placeholder={t("CONTENT")}
             bordered={false}
           ></TextArea>
         </Form.Item>
@@ -100,7 +102,7 @@ export const ToDoForm: FC<ToDoFormProps> = ({ todo, afterFinish }) => {
           <span className="inline-flex flex-grow items-baseline">
             {todo && (
               <>
-                <Tooltip title="delete">
+                <Tooltip title={`${t("DELETE")}`}>
                   <DeleteOutlined
                     key={todo.id + "deleteBtn"}
                     className="formFooterBtn"
@@ -116,7 +118,7 @@ export const ToDoForm: FC<ToDoFormProps> = ({ todo, afterFinish }) => {
             htmlType="submit"
             shape="round"
           >
-            {todo ? "Done" : "Add"}
+            {todo ? t("DONE") : t("ADD")}
           </Button>
         </div>
       </Form>
