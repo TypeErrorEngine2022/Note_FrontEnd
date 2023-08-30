@@ -1,10 +1,5 @@
 import { useContext } from "react";
-import {
-  ItemContextType,
-  ItemContext,
-  Scope,
-  GetListParams,
-} from "../context/ItemContext";
+import { ItemContextType, ItemContext, Scope } from "../context/ItemContext";
 import { Button } from "antd";
 import { useTranslation } from "react-i18next";
 
@@ -14,25 +9,17 @@ export function ToDoFilter() {
 
   async function scopeFilter(scope: Scope) {
     if (scope === Scope.All) {
-      setParams(
-        (prevParams) =>
-          new GetListParams(
-            undefined,
-            prevParams.pageSize,
-            prevParams.searchContent,
-            undefined
-          )
-      );
+      setParams((prevParams) => ({
+        ...prevParams,
+        page: undefined,
+        isCompleted: undefined,
+      }));
     } else {
-      setParams(
-        (prevParams) =>
-          new GetListParams(
-            undefined,
-            prevParams.pageSize,
-            prevParams.searchContent,
-            scope === Scope.Complete
-          )
-      );
+      setParams((prevParams) => ({
+        ...prevParams,
+        page: undefined,
+        isCompleted: scope === Scope.Complete,
+      }));
     }
   }
 

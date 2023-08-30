@@ -20,17 +20,20 @@ export class GetListParams {
   pageSize? = 10;
   searchContent?: string;
   isCompleted?: boolean;
+  isDeleted?: boolean;
 
   constructor(
     page?: number,
     pageSize?: number,
     searchContent?: string,
-    isCompleted?: boolean
+    isCompleted?: boolean,
+    isDeleted?: boolean
   ) {
     this.page = page || 1;
     this.pageSize = pageSize || 1;
     this.searchContent = searchContent;
     this.isCompleted = isCompleted;
+    this.isDeleted = isDeleted;
   }
 }
 

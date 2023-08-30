@@ -2,7 +2,7 @@ import { SearchOutlined } from "@ant-design/icons";
 import { Form, Input } from "antd";
 import { useForm } from "antd/es/form/Form";
 import { useContext } from "react";
-import { GetListParams, ItemContext } from "../context/ItemContext";
+import { ItemContext } from "../context/ItemContext";
 
 export function ToDoSearch() {
   const [form] = useForm();
@@ -12,26 +12,14 @@ export function ToDoSearch() {
     const searchContent = form.getFieldValue("searchBar") as string;
 
     if (searchContent === "") {
-      setParams(
-        (prevParams) =>
-          new GetListParams(
-            prevParams.page,
-            prevParams.pageSize,
-            undefined,
-            prevParams.isCompleted
-          )
-      );
+      setParams((prevParams) => ({ ...prevParams, searchContent: undefined }));
     } else {
       // after search, no.of total items may be different, so got back to default: {page: 1, pageSize: 10}
-      setParams(
-        (prevParams) =>
-          new GetListParams(
-            undefined,
-            prevParams.pageSize,
-            searchContent,
-            prevParams.isCompleted
-          )
-      );
+      setParams((prevParams) => ({
+        ...prevParams,
+        page: undefined,
+        searchContent: searchContent,
+      }));
     }
   }
 

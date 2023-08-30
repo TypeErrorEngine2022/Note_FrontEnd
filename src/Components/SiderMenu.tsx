@@ -1,7 +1,8 @@
 import { CarryOutOutlined, RestOutlined } from "@ant-design/icons";
 import { Menu, MenuProps } from "antd";
-import { FC } from "react";
+import { FC, useContext } from "react";
 import { useTranslation } from "react-i18next";
+import { ItemContext } from "../context/ItemContext";
 
 interface SiderMenuProps {
   selectedKey: string;
@@ -9,14 +10,20 @@ interface SiderMenuProps {
 }
 
 export const SiderMenu: FC<SiderMenuProps> = ({ selectedKey, setMenuKey }) => {
+  const { setParams } = useContext(ItemContext);
   const { t } = useTranslation();
 
   const handleMenuClick: MenuProps["onClick"] = (e) => {
+    setParams((prevParams) => ({
+      ...prevParams,
+      isDeleted: e.key === "TrashCan",
+    }));
     setMenuKey(e.key);
   };
 
   return (
     <Menu
+      key="SiderBarMenu"
       selectedKeys={[selectedKey]}
       onClick={handleMenuClick}
       items={[
