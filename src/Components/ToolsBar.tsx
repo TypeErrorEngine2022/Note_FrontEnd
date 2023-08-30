@@ -37,7 +37,7 @@ export const ToolsBar: FC<ToolsBarProps> = ({
 
   return (
     <Row className="h-full" justify="space-between" align="middle">
-      <Col span={23}>
+      <Col span={21}>
         <Tooltip title={`${t("DELETE")}`}>
           <DeleteOutlined
             key="ToolsBarDeleteButton"
@@ -46,6 +46,9 @@ export const ToolsBar: FC<ToolsBarProps> = ({
             onClick={handleBatchDelete}
           />
         </Tooltip>
+      </Col>
+      <Col span={2}>
+        <text>{`${t("SELECTED")} ${selectedItems.length} ${t("NOTES")}`}</text>
       </Col>
       <Col span={1}>
         <Tooltip title={`${t("UNSELECT")}`}>
