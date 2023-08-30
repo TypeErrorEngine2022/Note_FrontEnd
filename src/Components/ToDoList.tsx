@@ -11,6 +11,7 @@ import { useTranslation } from "react-i18next";
 import { ToolsBar } from "./ToolsBar";
 import Sider from "antd/es/layout/Sider";
 import { SiderMenu } from "./SiderMenu";
+import { useForm } from "antd/es/form/Form";
 
 export interface ToDoItem {
   id: string;
@@ -32,6 +33,7 @@ export const ToDoList = () => {
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [menuKey, setMenuKey] = useState<string>("Notes");
   const { t } = useTranslation();
+  const [createForm] = useForm();
 
   const handleSelect = (id: string) => {
     if (selectedItems.includes(id)) {
@@ -109,7 +111,7 @@ export const ToDoList = () => {
         </Sider>
         <Content>
           <div className="mx-16 mt-8">
-            <ToDoForm />
+            <ToDoForm form={createForm} />
           </div>
 
           <Divider></Divider>

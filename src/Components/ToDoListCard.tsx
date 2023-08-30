@@ -1,10 +1,11 @@
 import { FC, useContext, useState } from "react";
 import { ToDoListItem } from "./ToDoList";
-import { Button, Card, Checkbox, Modal, Skeleton } from "antd";
+import { Button, Card, Checkbox, Form, Modal, Skeleton } from "antd";
 import axios from "axios";
 import { ToDoForm } from "./ToDoForm";
 import { ItemContext } from "../context/ItemContext";
 import { useTranslation } from "react-i18next";
+import { useForm } from "antd/es/form/Form";
 
 interface ToDoListCardProps {
   todo: ToDoListItem;
@@ -32,6 +33,7 @@ export const ToDoListCard: FC<ToDoListCardProps> = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [detailItem, setDetailItem] = useState<ToDoListDetailItem>();
   const { t } = useTranslation();
+  const [form] = useForm();
 
   const getDetailItem = async () => {
     const res = await axios.get(
@@ -96,14 +98,20 @@ export const ToDoListCard: FC<ToDoListCardProps> = ({
         <Modal
           key={"modal" + todo.id}
           open={showModal}
-          onCancel={() => setShowModal(() => false)}
+          onCancel={() => {
+            form.submit();
+            setShowModal(() => false);
+          }}
           footer={null}
         >
           {isLoading && <Skeleton></Skeleton>}
           <div className="m-4">
             <ToDoForm
+              form={form}
               todo={detailItem}
-              afterFinish={() => setShowModal(() => false)}
+              afterFinish={() => {
+                setShowModal(() => false);
+              }}
               afterDelete={afterDelete}
             />
           </div>

@@ -4,7 +4,7 @@ import { ToDoListDetailItem } from "./ToDoListCard";
 import { FC, useContext } from "react";
 import TextArea from "antd/es/input/TextArea";
 import { ItemContext } from "../context/ItemContext";
-import { useForm } from "antd/es/form/Form";
+import { FormInstance } from "antd/es/form/Form";
 import { DeleteOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 
@@ -14,18 +14,19 @@ type FieldType = {
 };
 
 interface ToDoFormProps {
+  form: FormInstance;
   todo?: ToDoListDetailItem;
   afterFinish?: () => void;
   afterDelete?: (id: string) => void;
 }
 
 export const ToDoForm: FC<ToDoFormProps> = ({
+  form,
   todo,
   afterFinish,
   afterDelete,
 }) => {
   const { getItems } = useContext(ItemContext);
-  const [form] = useForm();
   const { t } = useTranslation();
 
   // submit form to add new item
@@ -34,7 +35,7 @@ export const ToDoForm: FC<ToDoFormProps> = ({
       if (afterFinish) afterFinish();
       return;
     }
-
+    console.log("submit");
     const data = {
       title: vals.title,
       content: vals.content,
@@ -54,10 +55,6 @@ export const ToDoForm: FC<ToDoFormProps> = ({
 
     form.resetFields();
     if (afterFinish) afterFinish();
-  }
-
-  async function onFormBlur() {
-    await handleSubmit(form.getFieldsValue(true));
   }
 
   async function deleteItem() {
@@ -83,7 +80,6 @@ export const ToDoForm: FC<ToDoFormProps> = ({
           ["title"]: todo?.title || "",
           ["content"]: todo?.content || "",
         }}
-        onBlur={() => onFormBlur()}
         onFinish={(vals: FieldType) => handleSubmit(vals)}
       >
         <Form.Item<FieldType> name="title">
