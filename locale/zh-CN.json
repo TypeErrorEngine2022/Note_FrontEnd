@@ -15,5 +15,6 @@
   "DELETE": "刪除",
   "SELECTED": "已选取",
   "UNSELECT": "取消选中",
-  "TRASHCAN": "垃圾桶"
+  "TRASHCAN": "垃圾桶",
+  "CANNOTEDIT": "不能编辑垃圾桶里的笔记"
 }

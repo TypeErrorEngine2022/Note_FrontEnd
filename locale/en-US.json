@@ -15,5 +15,6 @@
   "DELETE": "Delete",
   "SELECTED": "Selected",
   "UNSELECT": "Unselect",
-  "TRASHCAN": "Trash Can"
+  "TRASHCAN": "Trash Can",
+  "CANNOTEDIT": "Cannot edit items in trash can"
 }

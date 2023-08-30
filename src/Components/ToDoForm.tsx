@@ -26,7 +26,7 @@ export const ToDoForm: FC<ToDoFormProps> = ({
   afterFinish,
   afterDelete,
 }) => {
-  const { getItems } = useContext(ItemContext);
+  const { getItems, params } = useContext(ItemContext);
   const { t } = useTranslation();
 
   // submit form to add new item
@@ -80,6 +80,7 @@ export const ToDoForm: FC<ToDoFormProps> = ({
           ["title"]: todo?.title || "",
           ["content"]: todo?.content || "",
         }}
+        disabled={params.isDeleted}
         onFinish={(vals: FieldType) => handleSubmit(vals)}
       >
         <Form.Item<FieldType> name="title">

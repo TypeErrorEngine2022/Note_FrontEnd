@@ -1,6 +1,6 @@
 import { FC, useContext, useState } from "react";
 import { ToDoListItem } from "./ToDoList";
-import { Button, Card, Checkbox, Modal, Skeleton } from "antd";
+import { Button, Card, Checkbox, Modal, Skeleton, message } from "antd";
 import axios from "axios";
 import { ToDoForm } from "./ToDoForm";
 import { ItemContext } from "../context/ItemContext";
@@ -28,7 +28,7 @@ export const ToDoListCard: FC<ToDoListCardProps> = ({
   updateSelected,
   afterDelete,
 }) => {
-  const { getItems } = useContext(ItemContext);
+  const { getItems, params } = useContext(ItemContext);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [detailItem, setDetailItem] = useState<ToDoListDetailItem>();
@@ -36,6 +36,9 @@ export const ToDoListCard: FC<ToDoListCardProps> = ({
   const [form] = useForm();
 
   const getDetailItem = async () => {
+    if (params.isDeleted) {
+      message.warning(t("CANNOTEDIT"));
+    }
     const res = await axios.get(
       "http://localhost:3333/to-do-item/" + todo.id + "/detail"
     );
@@ -75,6 +78,7 @@ export const ToDoListCard: FC<ToDoListCardProps> = ({
         hoverable={true}
         extra={
           <Checkbox
+            disabled={params.isDeleted}
             checked={isSelected}
             onChange={() => updateSelected(todo.id)}
           ></Checkbox>
@@ -86,6 +90,7 @@ export const ToDoListCard: FC<ToDoListCardProps> = ({
             key={todo.id + "DoneBtn"}
             style={{ color: todo.isCompleted ? "rgb(22 163 74)" : "gray" }}
             onClick={() => updateIsComplete()}
+            disabled={params.isDeleted}
           >
             {t("DONE")}
           </Button>,
