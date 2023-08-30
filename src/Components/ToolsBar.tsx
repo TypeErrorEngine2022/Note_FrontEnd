@@ -36,12 +36,13 @@ export const ToolsBar: FC<ToolsBarProps> = ({
   };
 
   return (
-    <Row justify="space-between" align="middle">
+    <Row className="h-full" justify="space-between" align="middle">
       <Col span={23}>
         <Tooltip title={`${t("DELETE")}`}>
           <DeleteOutlined
             key="ToolsBarDeleteButton"
             className="formFooterBtn w-[2em] h-[2em]"
+            style={{ fontSize: "20px" }}
             onClick={handleBatchDelete}
           />
         </Tooltip>
@@ -51,6 +52,7 @@ export const ToolsBar: FC<ToolsBarProps> = ({
           <CloseOutlined
             key="ToolsBarUnselect"
             className="formFooterBtn w-[2em] h-[2em]"
+            style={{ fontSize: "20px" }}
             onClick={closeToolsBar}
           />
         </Tooltip>
