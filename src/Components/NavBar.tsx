@@ -1,14 +1,16 @@
 import { Row, Col, Select } from "antd";
 import { t } from "i18next";
-import i18n from "../../locale/i18n";
 import { ToDoSearch } from "./ToDoSearch";
 import { FC } from "react";
+import { useTranslation } from "react-i18next";
 
 interface NavBarProps {
   menuKey: string;
 }
 
 export const NavBar: FC<NavBarProps> = ({ menuKey }) => {
+  const { i18n } = useTranslation();
+
   return (
     <Row justify="space-around" align="middle">
       <Col
