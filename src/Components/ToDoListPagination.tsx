@@ -34,6 +34,7 @@ export const ToDoListPagination = () => {
       pageSize={paginatedListItems.pageSize}
       total={paginatedListItems.total}
       showQuickJumper={true}
+      showSizeChanger={true}
       showTotal={(total: number) => `${t("TOTAL")} ${total} ${t("NOTES")}`}
       onChange={(page: number, pageSize: number) => updatePage(page, pageSize)}
       locale={{ jump_to: t("GO TO"), page: t("PAGE") }}
