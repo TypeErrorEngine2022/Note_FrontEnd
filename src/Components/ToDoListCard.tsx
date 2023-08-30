@@ -1,6 +1,6 @@
 import { FC, useContext, useState } from "react";
 import { ToDoListItem } from "./ToDoList";
-import { Button, Card, Modal, Skeleton } from "antd";
+import { Button, Card, Checkbox, Modal, Skeleton } from "antd";
 import axios from "axios";
 import { ToDoForm } from "./ToDoForm";
 import { ItemContext } from "../context/ItemContext";
@@ -8,6 +8,9 @@ import { useTranslation } from "react-i18next";
 
 interface ToDoListCardProps {
   todo: ToDoListItem;
+  isSelected: boolean;
+  updateSelected: (id: string) => void;
+  afterDelete: (id: string) => void;
 }
 
 export class ToDoListDetailItem {
@@ -18,7 +21,12 @@ export class ToDoListDetailItem {
   lastModificationTime: Date;
 }
 
-export const ToDoListCard: FC<ToDoListCardProps> = ({ todo }) => {
+export const ToDoListCard: FC<ToDoListCardProps> = ({
+  todo,
+  isSelected,
+  updateSelected,
+  afterDelete,
+}) => {
   const { getItems } = useContext(ItemContext);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -63,6 +71,12 @@ export const ToDoListCard: FC<ToDoListCardProps> = ({ todo }) => {
         size="small"
         title={todo.title || "No Title"}
         hoverable={true}
+        extra={
+          <Checkbox
+            defaultChecked={isSelected}
+            onChange={() => updateSelected(todo.id)}
+          ></Checkbox>
+        }
         actions={[
           <Button
             className="w-fit h-fit"
@@ -90,6 +104,7 @@ export const ToDoListCard: FC<ToDoListCardProps> = ({ todo }) => {
             <ToDoForm
               todo={detailItem}
               afterFinish={() => setShowModal(() => false)}
+              afterDelete={afterDelete}
             />
           </div>
         </Modal>

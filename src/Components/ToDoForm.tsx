@@ -16,9 +16,14 @@ type FieldType = {
 interface ToDoFormProps {
   todo?: ToDoListDetailItem;
   afterFinish?: () => void;
+  afterDelete?: (id: string) => void;
 }
 
-export const ToDoForm: FC<ToDoFormProps> = ({ todo, afterFinish }) => {
+export const ToDoForm: FC<ToDoFormProps> = ({
+  todo,
+  afterFinish,
+  afterDelete,
+}) => {
   const { getItems } = useContext(ItemContext);
   const [form] = useForm();
   const { t } = useTranslation();
@@ -62,6 +67,7 @@ export const ToDoForm: FC<ToDoFormProps> = ({ todo, afterFinish }) => {
       await axios.delete("http://localhost:3333/to-do-item/" + todo.id);
       await getItems();
       message.success("Item deleted");
+      if (afterDelete) afterDelete(todo.id);
     } catch (err) {
       console.error(err);
     }
@@ -105,7 +111,7 @@ export const ToDoForm: FC<ToDoFormProps> = ({ todo, afterFinish }) => {
                 <Tooltip title={`${t("DELETE")}`}>
                   <DeleteOutlined
                     key={todo.id + "deleteBtn"}
-                    className="formFooterBtn"
+                    className="formFooterBtn w-[2em] h-[2em]"
                     onClick={deleteItem}
                   />
                 </Tooltip>

@@ -28,8 +28,6 @@ h1 {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 2em;
-  height: 2em;
   border-radius: 9999px;
 }
 
