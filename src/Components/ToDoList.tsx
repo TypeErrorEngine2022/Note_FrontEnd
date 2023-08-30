@@ -75,6 +75,7 @@ export const ToDoList = () => {
               className="flex justify-end"
             >
               <Select
+                className=" w-[9em]"
                 defaultValue={"zh-HK"}
                 onChange={(lang: string) => i18n.changeLanguage(lang)}
                 options={[
