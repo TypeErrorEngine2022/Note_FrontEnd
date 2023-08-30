@@ -10,6 +10,8 @@ import { ToDoListPagination } from "./ToDoListPagination";
 import { ToDoSearch } from "./ToDoSearch";
 import { useTranslation } from "react-i18next";
 import { ToolsBar } from "./ToolsBar";
+import Sider from "antd/es/layout/Sider";
+import { SiderMenu } from "./SiderMenu";
 
 export interface ToDoItem {
   id: string;
@@ -29,6 +31,8 @@ export const ToDoList = () => {
     useContext<ItemContextType>(ItemContext);
   const { i18n } = useTranslation();
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const [menuKey, setMenuKey] = useState<string>("Notes");
+  const { t } = useTranslation();
 
   const handleSelect = (id: string) => {
     if (selectedItems.includes(id)) {
@@ -57,8 +61,12 @@ export const ToDoList = () => {
         )}
         {selectedItems.length === 0 && (
           <Row justify="space-around" align="middle">
-            <Col md={{ span: 2 }} lg={{ span: 2, offset: 1 }}>
-              <CarryOutOutlined className="text-4xl mr-2 lg:mr-8" />
+            <Col
+              md={{ span: 2 }}
+              lg={{ span: 2, offset: 1 }}
+              style={{ fontSize: "20px" }}
+            >
+              {`${t(menuKey.toLocaleUpperCase())}`}
             </Col>
             <Col
               md={{ span: 8 }}
@@ -89,6 +97,17 @@ export const ToDoList = () => {
         )}
       </Header>
       <Layout hasSider={true}>
+        <Sider
+          theme="light"
+          defaultCollapsed={false}
+          collapsible={true}
+          collapsedWidth="4em"
+        >
+          <SiderMenu
+            selectedKey={menuKey}
+            setMenuKey={(key: string) => setMenuKey(() => key)}
+          />
+        </Sider>
         <Content>
           <div className="mx-16 mt-8">
             <ToDoForm />
