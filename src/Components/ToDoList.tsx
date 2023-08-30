@@ -12,6 +12,7 @@ import { ToolsBar } from "./ToolsBar";
 import Sider from "antd/es/layout/Sider";
 import { SiderMenu } from "./SiderMenu";
 import { useForm } from "antd/es/form/Form";
+import { NavBar } from "./NavBar";
 
 export interface ToDoItem {
   id: string;
@@ -60,42 +61,7 @@ export const ToDoList = () => {
             }
           />
         )}
-        {selectedItems.length === 0 && (
-          <Row justify="space-around" align="middle">
-            <Col
-              md={{ span: 2 }}
-              lg={{ span: 2, offset: 1 }}
-              style={{ fontSize: "20px" }}
-            >
-              {`${t(menuKey.toLocaleUpperCase())}`}
-            </Col>
-            <Col
-              md={{ span: 8 }}
-              lg={{ span: 8 }}
-              className="flex justify-start"
-            >
-              <span className="w-[25vw] lg:w-[50vw] mr-2">
-                <ToDoSearch />
-              </span>
-            </Col>
-            <Col
-              md={{ span: 4, offset: 10 }}
-              lg={{ span: 6, offset: 7 }}
-              className="flex justify-end"
-            >
-              <Select
-                className=" w-[9em]"
-                defaultValue={"zh-HK"}
-                onChange={(lang: string) => i18n.changeLanguage(lang)}
-                options={[
-                  { value: "en-US", label: "English" },
-                  { value: "zh-CN", label: "中文（简体)" },
-                  { value: "zh-HK", label: "中文（繁体)" },
-                ]}
-              ></Select>
-            </Col>
-          </Row>
-        )}
+        {selectedItems.length === 0 && <NavBar menuKey={menuKey} />}
       </Header>
       <Layout hasSider={true}>
         <Sider
