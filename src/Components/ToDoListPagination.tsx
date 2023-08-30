@@ -8,12 +8,24 @@ export const ToDoListPagination = () => {
     useContext<ItemContextType>(ItemContext);
   const { t } = useTranslation();
 
+  // pageSize and page will not change together
   async function updatePage(page: number, pageSize: number) {
-    setParams((prevParams) => ({
-      ...prevParams,
-      page: page,
-      pageSize: pageSize,
-    }));
+    // pageSize change
+    if (pageSize !== paginatedListItems.pageSize) {
+      setParams((prevParams) => ({
+        ...prevParams,
+        page: 1,
+        pageSize: pageSize,
+      }));
+    }
+    // page change
+    else {
+      setParams((prevParams) => ({
+        ...prevParams,
+        page: page,
+        pageSize: pageSize,
+      }));
+    }
   }
 
   return (
