@@ -73,7 +73,7 @@ export const ToDoListCard: FC<ToDoListCardProps> = ({
         hoverable={true}
         extra={
           <Checkbox
-            defaultChecked={isSelected}
+            checked={isSelected}
             onChange={() => updateSelected(todo.id)}
           ></Checkbox>
         }

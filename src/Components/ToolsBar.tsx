@@ -3,7 +3,7 @@ import { FC, useContext } from "react";
 import { ItemContext } from "../context/ItemContext";
 import axios from "axios";
 import { CloseOutlined, DeleteOutlined } from "@ant-design/icons";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 interface ToolsBarProps {
   selectedItems: string[];
@@ -15,6 +15,7 @@ export const ToolsBar: FC<ToolsBarProps> = ({
   setSelectedItems,
 }) => {
   const { getItems } = useContext(ItemContext);
+  const { t } = useTranslation();
 
   const handleBatchDelete = async () => {
     if (!selectedItems) return;
@@ -30,6 +31,10 @@ export const ToolsBar: FC<ToolsBarProps> = ({
     }
   };
 
+  const closeToolsBar = () => {
+    setSelectedItems([]);
+  };
+
   return (
     <Row justify="space-between" align="middle">
       <Col span={23}>
@@ -42,7 +47,13 @@ export const ToolsBar: FC<ToolsBarProps> = ({
         </Tooltip>
       </Col>
       <Col span={1}>
-        <CloseOutlined />
+        <Tooltip title={`${t("UNSELECT")}`}>
+          <CloseOutlined
+            key="ToolsBarUnselect"
+            className="formFooterBtn w-[2em] h-[2em]"
+            onClick={closeToolsBar}
+          />
+        </Tooltip>
       </Col>
     </Row>
   );
