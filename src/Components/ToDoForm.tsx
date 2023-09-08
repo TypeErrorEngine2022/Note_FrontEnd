@@ -43,9 +43,13 @@ export const ToDoForm: FC<ToDoFormProps> = ({
 
     try {
       if (todo) {
-        await axios.put("http://localhost:3333/to-do-item/" + todo.id, data);
+        await axios.put("https://localhost:3333/to-do-item/" + todo.id, data, {
+          withCredentials: true,
+        });
       } else {
-        await axios.post("http://localhost:3333/to-do-item", data);
+        await axios.post("https://localhost:3333/to-do-item", data, {
+          withCredentials: true,
+        });
       }
 
       await getItems();
@@ -61,7 +65,9 @@ export const ToDoForm: FC<ToDoFormProps> = ({
     if (!todo) return;
 
     try {
-      await axios.delete("http://localhost:3333/to-do-item/" + todo.id);
+      await axios.delete("https://localhost:3333/to-do-item/" + todo.id, {
+        withCredentials: true,
+      });
       await getItems();
       message.success("Item deleted");
       if (afterDelete) afterDelete(todo.id);

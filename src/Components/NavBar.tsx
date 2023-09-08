@@ -1,9 +1,8 @@
-import { Row, Col, Select, Button } from "antd";
+import { Row, Col, Select } from "antd";
 import { t } from "i18next";
 import { ToDoSearch } from "./ToDoSearch";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { UserOutlined } from "@ant-design/icons";
 import { UserButton } from "./UserButton";
 
 interface NavBarProps {

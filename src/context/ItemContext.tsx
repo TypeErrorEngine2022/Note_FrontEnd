@@ -46,6 +46,8 @@ export type ItemContextType = {
   isFetching: boolean;
   params: GetListParams;
   setParams: React.Dispatch<React.SetStateAction<GetListParams>>;
+  isLogin: boolean;
+  setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const ItemContext = createContext<ItemContextType>({
@@ -62,6 +64,8 @@ export const ItemContext = createContext<ItemContextType>({
   isFetching: false,
   params: new GetListParams(1, 10),
   setParams: () => {},
+  isLogin: false,
+  setIsLogin: () => false,
 });
 
 export const ItemContextProvider = ({
@@ -81,15 +85,18 @@ export const ItemContextProvider = ({
     page: 1,
     pageSize: 10,
   });
+  const [isLogin, setIsLogin] = useState<boolean>(false);
 
   async function getItems() {
+    // if (!isLogin) return;
     try {
       setIsFetching(() => true);
       console.log("fetching using");
       console.log(params);
       const data = (
-        await axios.get("http://localhost:3333/to-do-item", {
+        await axios.get("https://localhost:3333/to-do-item", {
           params: params,
+          withCredentials: true,
         })
       ).data as PaginatedList<ToDoListItem>;
       setPaginatedListItems(() => data);
@@ -102,7 +109,7 @@ export const ItemContextProvider = ({
   useEffect(() => {
     getItems();
     console.log(paginatedListItems);
-  }, [params]);
+  }, [params, isLogin]);
 
   return (
     <ItemContext.Provider
@@ -113,6 +120,8 @@ export const ItemContextProvider = ({
         isFetching,
         params,
         setParams,
+        isLogin,
+        setIsLogin,
       }}
     >
       {children}

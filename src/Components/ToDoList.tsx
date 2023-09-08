@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Layout, { Content, Header } from "antd/lib/layout/layout";
-
 import { ToolsBar } from "./ToolsBar";
 import Sider from "antd/es/layout/Sider";
 import { SiderMenu } from "./SiderMenu";
 import { NavBar } from "./NavBar";
 import { ToDoListContent } from "./ToDoListContent";
+import { useNavigate } from "react-router";
+import axios from "axios";
 
 export interface ToDoItem {
   id: string;
@@ -23,6 +24,21 @@ export class ToDoListItem {
 export const ToDoList = () => {
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [menuKey, setMenuKey] = useState<string>("Notes");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const verify = async () => {
+      try {
+        await axios.get("https://localhost:3333/auth/me", {
+          withCredentials: true,
+        });
+      } catch (err) {
+        navigate("/login", { replace: true });
+      }
+    };
+
+    verify();
+  }, []);
 
   const handleSelect = (id: string) => {
     if (selectedItems.includes(id)) {

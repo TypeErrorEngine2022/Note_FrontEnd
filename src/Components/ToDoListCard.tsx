@@ -40,7 +40,8 @@ export const ToDoListCard: FC<ToDoListCardProps> = ({
       message.warning(t("CANNOTEDIT"));
     }
     const res = await axios.get(
-      "http://localhost:3333/to-do-item/" + todo.id + "/detail"
+      "https://localhost:3333/to-do-item/" + todo.id + "/detail",
+      { withCredentials: true }
     );
     setDetailItem(() => res.data as ToDoListDetailItem);
   };
@@ -58,8 +59,9 @@ export const ToDoListCard: FC<ToDoListCardProps> = ({
     try {
       setIsLoading(() => true);
       await axios.put(
-        "http://localhost:3333/to-do-item/" + todo.id + "/complete",
-        { isCompleted: !todo.isCompleted }
+        "https://localhost:3333/to-do-item/" + todo.id + "/complete",
+        { isCompleted: !todo.isCompleted },
+        { withCredentials: true }
       );
       await getItems();
       setIsLoading(false);

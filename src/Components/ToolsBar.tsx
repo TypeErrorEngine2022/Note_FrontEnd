@@ -21,8 +21,9 @@ export const ToolsBar: FC<ToolsBarProps> = ({
     if (!selectedItems) return;
 
     try {
-      await axios.delete("http://localhost:3333/to-do-item/batch", {
+      await axios.delete("https://localhost:3333/to-do-item/batch", {
         params: { items: selectedItems },
+        withCredentials: true,
       });
       setSelectedItems([]);
       await getItems();
