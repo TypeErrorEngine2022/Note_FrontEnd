@@ -16,3 +16,4 @@ pnpm install
 ```bash
 pnpm dev
 ```
+Open http://localhost:5173/
