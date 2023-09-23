@@ -9,6 +9,7 @@ export class User {
 export type AuthContextType = {
   user: User | null | undefined;
   setUser: React.Dispatch<React.SetStateAction<User | null | undefined>>;
+  signup: (data: { userName: string; password: string }) => Promise<void>;
   signin: (data: { userName: string; password: string }) => Promise<void>;
   signout: () => Promise<void>;
 };
@@ -16,6 +17,10 @@ export type AuthContextType = {
 export const AuthContext = createContext<AuthContextType>({
   user: null,
   setUser: () => null,
+  signup: async (data: { userName: string; password: string }) =>
+    new Promise<void>(() => {
+      console.log(data);
+    }),
   signin: async (data: { userName: string; password: string }) =>
     new Promise<void>(() => {
       console.log(data);
@@ -27,6 +32,20 @@ export const AuthProvider = ({ children }: PropsWithChildren<unknown>) => {
   const [user, setUser] = useState<User | null | undefined>();
   const navigate = useNavigate();
 
+  const signup = async (data: { userName: string; password: string }) => {
+    try {
+      await axios.post("https://localhost:3333/auth/signup", data, {
+        withCredentials: true,
+      });
+      setUser(() => ({
+        name: data.userName,
+      }));
+      navigate("/");
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const signin = async (data: { userName: string; password: string }) => {
     try {
       await axios.post("https://localhost:3333/auth/signin", data, {
@@ -35,7 +54,7 @@ export const AuthProvider = ({ children }: PropsWithChildren<unknown>) => {
       setUser(() => ({
         name: data.userName,
       }));
-      navigate("/", { replace: true });
+      navigate("/");
     } catch (err) {
       console.error(err);
     }
@@ -47,14 +66,14 @@ export const AuthProvider = ({ children }: PropsWithChildren<unknown>) => {
         withCredentials: true,
       });
       setUser(() => null);
-      navigate("/login", { replace: true });
+      navigate("/login");
     } catch (err) {
       console.error(err);
     }
   };
 
   return (
-    <AuthContext.Provider value={{ user, setUser, signin, signout }}>
+    <AuthContext.Provider value={{ user, setUser, signup, signin, signout }}>
       {children}
     </AuthContext.Provider>
   );
