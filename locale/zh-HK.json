@@ -1,0 +1,20 @@
+{
+  "ALL": "全部",
+  "COMPLETE": "已完成",
+  "INCOMPLETE": "未完成",
+  "GO TO": "前往",
+  "PAGE": "頁",
+  "DONE": "完成",
+  "TITLE": "標題",
+  "OPTIONAL": "可選",
+  "CONTENT": "內容",
+  "ADD": "新增",
+  "Search": "搜尋",
+  "TOTAL": "總共",
+  "NOTES": "筆記",
+  "DELETE": "刪除",
+  "SELECTED": "已選取",
+  "UNSELECT": "取消選中",
+  "TRASHCAN": "垃圾桶",
+  "CANNOTEDIT": "不能編輯垃圾桶裡的筆記"
+}
